@@ -1,0 +1,1 @@
+export type createTokenDto = {id?: number, value: string}
