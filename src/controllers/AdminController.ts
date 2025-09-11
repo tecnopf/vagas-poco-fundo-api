@@ -3,17 +3,25 @@ import { Request, Response } from "express";
 import { GenerateToken } from "../usecases/admin/generateToken";
 import { DeleteToken } from "../usecases/admin/deleteToken";
 import { ADMIN_PASSWORD } from "../config/env";
+import { GetTokens } from "../usecases/admin/getTokens";
 
 
 export class AdminController {
   constructor(
     private gerarTokenUC: GenerateToken,
-    private deletarTokenUC: DeleteToken
+    private deletarTokenUC: DeleteToken,
+    private getTokensUc: GetTokens
   ) {}
 
   private validatePassw(req: Request): boolean {
     return req.headers["x-admin-password"] === ADMIN_PASSWORD;
   }
+
+  getTokens = async (req: Request, res: Response) => {
+    if (!this.validatePassw(req)) return res.status(401).json({ error: "Unauthorized" });
+    const tokens = await this.getTokensUc.execute();
+    res.json(tokens);
+  };
 
   generateToken = async (req: Request, res: Response) => {
     if (!this.validatePassw(req)) return res.status(401).json({ error: "Unauthorized" });

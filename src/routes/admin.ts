@@ -5,6 +5,7 @@ import { DeleteToken } from "../usecases/admin/deleteToken";
 import { TokenRepositoryJSON } from "../infrastructure/TokenRepositoryJSON";
 import { TokenRepositoryMySQL } from "../infrastructure/TokenRepositoryMySQL";
 import { IS_PRODUCTION } from "../config/env";
+import { GetTokens } from "../usecases/admin/getTokens";
 
 const router = Router();
 
@@ -17,8 +18,10 @@ if (IS_PRODUCTION) {
 
 const generateTokenUC = new GenerateToken(repo);
 const deleteTokenUC = new DeleteToken(repo);
-const controller = new AdminController(generateTokenUC, deleteTokenUC);
+const getTokensUc = new GetTokens(repo)
+const controller = new AdminController(generateTokenUC, deleteTokenUC, getTokensUc);
 
+router.get("/tokens", controller.getTokens)
 router.post("/generate-token", controller.generateToken);
 router.delete("/delete-token", controller.deleteToken);
 
