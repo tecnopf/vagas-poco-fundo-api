@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 app.use(cors(
   {
     credentials: true,
-    origin: process.env.NODE_ENV !== "production" ? 'http://localhost:5173' : 'https://vagas-pf-api.onrender.com'
+    origin: process.env.NODE_ENV !== "production" ? 'http://localhost:5173' : 'https://vagaspocofundo.netlify.app'
   }
 ));
 app.use(cookieParser())
