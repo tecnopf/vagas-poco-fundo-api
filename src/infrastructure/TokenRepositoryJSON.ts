@@ -22,13 +22,14 @@ export class TokenRepositoryJSON implements ITokenRepository {
     return this.read();
   }
 
-  async save(token: createTokenDto): Promise<void> {
+  async save(token: createTokenDto): Promise<Token> {
     const tokens = await this.read();
     const tokenId = tokens.length > 0 ? (tokens[tokens.length - 1].id! + 1) : 1;
     const newToken: Token = {value: token.value, id: tokenId }
 
     tokens.push(newToken);
     await this.write(tokens);
+    return newToken
   }
 
   async delete(id: number): Promise<boolean> {

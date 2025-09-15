@@ -1,36 +1,45 @@
-// src/controllers/AdminController.ts
 import { Request, Response } from "express";
 import { GenerateToken } from "../usecases/admin/generateToken";
 import { DeleteToken } from "../usecases/admin/deleteToken";
 import { ADMIN_PASSWORD } from "../config/env";
 import { GetTokens } from "../usecases/admin/getTokens";
+import { LoginAdmin } from "../usecases/admin/login";
 
 
 export class AdminController {
   constructor(
     private gerarTokenUC: GenerateToken,
     private deletarTokenUC: DeleteToken,
-    private getTokensUc: GetTokens
+    private getTokensUc: GetTokens,
+    private loginUC: LoginAdmin
   ) {}
 
-  private validatePassw(req: Request): boolean {
-    return req.headers["x-admin-password"] === ADMIN_PASSWORD;
+  login = async (req: Request, res: Response)=>{
+    const { key } = req.body;
+    return this.loginUC.execute(req.body, res)
   }
 
+  checkSession = async (req: Request, res: Response) => {
+    const isValid = this.loginUC.validateCookie(req, res);
+    if (!isValid) return;
+
+    res.json({ message: "Authorized" });
+  };
+
   getTokens = async (req: Request, res: Response) => {
-    if (!this.validatePassw(req)) return res.status(401).json({ error: "Unauthorized" });
+    if (!this.loginUC.validateCookie(req, res)) return;
     const tokens = await this.getTokensUc.execute();
     res.json(tokens);
   };
 
   generateToken = async (req: Request, res: Response) => {
-    if (!this.validatePassw(req)) return res.status(401).json({ error: "Unauthorized" });
+    if (!this.loginUC.validateCookie(req, res)) return;
     const token = await this.gerarTokenUC.execute();
-    res.json({ token });
+    res.json(token);
   };
 
   deleteToken = async (req: Request, res: Response) => {
-    if (!this.validatePassw(req)) return res.status(401).json({ error: "Unauthorized" });
+    if (!this.loginUC.validateCookie(req, res)) return;
     const { tokenID } = req.body || {};
     if (!tokenID) return res.status(400).json({ error: "Token ID is required" });
 
