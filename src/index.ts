@@ -2,10 +2,11 @@ import { ADMIN_PASSWORD } from "./config/env";
 import express, { Request, Response } from "express";
 import vagasRouter from "./routes/vagas";
 import adminRoutes from "./routes/admin";
+import authRoutes from "./routes/auth"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-
+import profileRoutes from "./routes/profile";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -31,7 +32,6 @@ app.use(
   morgan(':date :method :url :status :response-time ms - :res[content-length]')
 );
 
-
 app.get("/", (req: Request, res: Response) => {
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.send("API Vagas Poço Fundo - Online 🚀!");
@@ -41,6 +41,8 @@ const apiRouter = express.Router();
 
 apiRouter.use("/vagas", vagasRouter);
 apiRouter.use("/admin", adminRoutes);
+apiRouter.use("/auth", authRoutes);
+apiRouter.use("/profile", profileRoutes);
 
 app.use("/api", apiRouter);
 

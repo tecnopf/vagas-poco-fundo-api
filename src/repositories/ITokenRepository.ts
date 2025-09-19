@@ -5,4 +5,5 @@ export interface ITokenRepository {
   list(): Promise<Token[]>;
   save(token: createTokenDto): Promise<Token>;
   delete(tokenId: number): Promise<boolean>;
+  findByValue(value: string): Promise<Token | null>;
 }

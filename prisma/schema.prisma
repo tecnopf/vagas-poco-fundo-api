@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/client"
 }
 
 datasource db {
@@ -9,8 +10,18 @@ datasource db {
 
 model Token {
   id    Int     @id @default(autoincrement())
-  value String
+  value String  @unique
 
   @@map("tokens") 
 }
 
+model Establishment {
+  id         Int    @id @default(autoincrement())
+  name       String
+  cnpj       String @unique
+  email      String @unique
+  password   String
+  createTime DateTime @default(now()) @map("create_time")
+
+  @@map("establishments")
+}

@@ -24,23 +24,28 @@ export class TokenRepositoryJSON implements ITokenRepository {
 
   async save(token: createTokenDto): Promise<Token> {
     const tokens = await this.read();
-    const tokenId = tokens.length > 0 ? (tokens[tokens.length - 1].id! + 1) : 1;
-    const newToken: Token = {value: token.value, id: tokenId }
+    const tokenId = tokens.length > 0 ? tokens[tokens.length - 1].id! + 1 : 1;
+    const newToken: Token = { value: token.value, id: tokenId };
 
     tokens.push(newToken);
     await this.write(tokens);
-    return newToken
+    return newToken;
   }
 
   async delete(id: number): Promise<boolean> {
     const tokens = await this.read();
     const filtered = tokens.filter((t) => t.id !== id);
 
-    if (filtered.length === tokens.length) {
-      return false;
-    }
+    if (filtered.length === tokens.length) return false;
 
     await this.write(filtered);
     return true;
+  }
+
+  // Novo método
+  async findByValue(value: string): Promise<Token | null> {
+    const tokens = await this.read();
+    const token = tokens.find((t) => t.value === value);
+    return token || null;
   }
 }
