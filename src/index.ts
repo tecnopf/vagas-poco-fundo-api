@@ -7,6 +7,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import profileRoutes from "./routes/profile";
+import { errorMiddleware } from "./middlewares/ErrorMiddleware";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -45,6 +46,8 @@ apiRouter.use("/auth", authRoutes);
 apiRouter.use("/profile", profileRoutes);
 
 app.use("/api", apiRouter);
+
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

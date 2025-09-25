@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { AppError } from "../utils/AppError";
 
 const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey";
@@ -23,6 +23,9 @@ export function ensureAuth(req: Request, res: Response, next: NextFunction) {
     req.userId = decoded.id.toString();
     next();
   } catch (err) {
+    if (err instanceof TokenExpiredError) {
+      throw new AppError("Session expired, please login again", 401);
+    }
     throw new AppError("Invalid token", 401);
   }
 }

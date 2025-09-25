@@ -9,6 +9,10 @@ export class AuthController {
     private registerUseCase: RegisterUseCase,
   ) {}
 
+  check = (req: Request, res: Response) => {
+    res.json({ valid: true, userId: req.userId });
+  };
+  
   login = async (req: Request, res: Response) => {
     try {
       const { token, user } = await this.loginUseCase.execute(req.body);
