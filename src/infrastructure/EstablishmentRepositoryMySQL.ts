@@ -1,10 +1,12 @@
+import { InputJsonValue } from "@prisma/client/runtime/library";
 import { PrismaClient, Establishment } from "../generated/client";
 import { IEstablishmentRepository } from "../repositories/IEstablishmentRepository";
+import { Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export class PrismaEstablishmentRepository implements IEstablishmentRepository {
-  async create(data: Omit<Establishment, "id">): Promise<Establishment> {
+  async create(data: Omit<Establishment, "id" | "socialLinks">): Promise<Establishment> {
     return prisma.establishment.create({ data });
   }
 
@@ -20,7 +22,7 @@ export class PrismaEstablishmentRepository implements IEstablishmentRepository {
     return prisma.establishment.findUnique({ where: { cnpj } });
   }
 
-  async update(id: number, data: Partial<Establishment>): Promise<Establishment> {
+  async update(id: number, data: Prisma.EstablishmentUpdateInput): Promise<Establishment> {
     return prisma.establishment.update({ where: { id }, data });
   }
 

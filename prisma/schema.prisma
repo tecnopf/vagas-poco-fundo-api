@@ -9,19 +9,39 @@ datasource db {
 }
 
 model Token {
-  id    Int     @id @default(autoincrement())
-  value String  @unique
+  id    Int    @id @default(autoincrement())
+  value String @unique
 
-  @@map("tokens") 
+  @@map("tokens")
 }
 
 model Establishment {
-  id         Int    @id @default(autoincrement())
-  name       String
-  cnpj       String @unique
-  email      String @unique
-  password   String
-  createTime DateTime @default(now()) @map("create_time")
+  id           Int       @id @default(autoincrement())
+  name         String
+  cnpj         String    @unique
+  email        String    @unique
+  password     String
+  createTime   DateTime  @default(now()) @map("create_time")
+  socialLinks  Json?     @map("social_links")
+  jobs         Job[]     @relation("EstablishmentJobs") // 👈 nome da relação
 
   @@map("establishments")
+}
+
+model Job {
+  id                  Int            @id @default(autoincrement())
+  title               String
+  description         String
+  status              String         @default("opened")
+  totalVacancies      Int
+  remainingVacancies  Int
+  expiration          DateTime?
+  educationLevel      String
+  workingHoursPerDay  Int
+  createdDate         DateTime       @default(now())
+  link                String?
+  establishmentId     Int
+  establishment       Establishment  @relation("EstablishmentJobs", fields: [establishmentId], references: [id]) // 👈 mesmo nome
+
+  @@map("jobs")
 }

@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { GetProfileUseCase } from "../usecases/home/getProfileInfo";
 import { UpdateProfileUseCase } from "../usecases/profile/updateProfile";
+import { UpdateSocialLinksUseCase } from "../usecases/profile/updateSocialLinks";
 
 export class ProfileController {
   constructor(private getProfileUseCase: GetProfileUseCase,
-    private updateProfileUseCase: UpdateProfileUseCase
+    private updateProfileUseCase: UpdateProfileUseCase,
+    private updateSocialLinksUseCase: UpdateSocialLinksUseCase,
   ) {}
 
   handle = async (req: Request, res: Response) => {
@@ -36,4 +38,27 @@ export class ProfileController {
       res.status(err.statusCode || 500).json({ error: err.message });
     }
   };
+
+  updateSocialLinks = async (req: Request, res: Response) => {
+    try {
+      if (!req.userId) return res.status(401).json({ error: "Unauthorized" });
+
+      const { email, useAccountEmail, facebook, whatsapp, instagram, linkedin } = req.body;
+
+      const updatedSocialLinks = await this.updateSocialLinksUseCase.execute({
+        establishmentId: Number(req.userId),
+        facebook,
+        email,
+        instagram,
+        linkedin,
+        whatsapp,
+        useAccountEmail
+      });
+
+      res.json(updatedSocialLinks);
+    } catch (err: any) {
+      res.status(err.statusCode || 500).json({ error: err.message });
+    }
+  };
+
 }

@@ -131,7 +131,23 @@ exports.Prisma.EstablishmentScalarFieldEnum = {
   cnpj: 'cnpj',
   email: 'email',
   password: 'password',
-  createTime: 'createTime'
+  createTime: 'createTime',
+  socialLinks: 'socialLinks'
+};
+
+exports.Prisma.JobScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  totalVacancies: 'totalVacancies',
+  remainingVacancies: 'remainingVacancies',
+  expiration: 'expiration',
+  educationLevel: 'educationLevel',
+  workingHoursPerDay: 'workingHoursPerDay',
+  createdDate: 'createdDate',
+  link: 'link',
+  establishmentId: 'establishmentId'
 };
 
 exports.Prisma.SortOrder = {
@@ -139,8 +155,29 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.TokenOrderByRelevanceFieldEnum = {
   value: 'value'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 
 exports.Prisma.EstablishmentOrderByRelevanceFieldEnum = {
@@ -150,10 +187,19 @@ exports.Prisma.EstablishmentOrderByRelevanceFieldEnum = {
   password: 'password'
 };
 
+exports.Prisma.JobOrderByRelevanceFieldEnum = {
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  educationLevel: 'educationLevel',
+  link: 'link'
+};
+
 
 exports.Prisma.ModelName = {
   Token: 'Token',
-  Establishment: 'Establishment'
+  Establishment: 'Establishment',
+  Job: 'Job'
 };
 
 /**

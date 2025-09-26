@@ -103,7 +103,23 @@ exports.Prisma.EstablishmentScalarFieldEnum = {
   cnpj: 'cnpj',
   email: 'email',
   password: 'password',
-  createTime: 'createTime'
+  createTime: 'createTime',
+  socialLinks: 'socialLinks'
+};
+
+exports.Prisma.JobScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  totalVacancies: 'totalVacancies',
+  remainingVacancies: 'remainingVacancies',
+  expiration: 'expiration',
+  educationLevel: 'educationLevel',
+  workingHoursPerDay: 'workingHoursPerDay',
+  createdDate: 'createdDate',
+  link: 'link',
+  establishmentId: 'establishmentId'
 };
 
 exports.Prisma.SortOrder = {
@@ -111,8 +127,29 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.TokenOrderByRelevanceFieldEnum = {
   value: 'value'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 
 exports.Prisma.EstablishmentOrderByRelevanceFieldEnum = {
@@ -122,10 +159,19 @@ exports.Prisma.EstablishmentOrderByRelevanceFieldEnum = {
   password: 'password'
 };
 
+exports.Prisma.JobOrderByRelevanceFieldEnum = {
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  educationLevel: 'educationLevel',
+  link: 'link'
+};
+
 
 exports.Prisma.ModelName = {
   Token: 'Token',
-  Establishment: 'Establishment'
+  Establishment: 'Establishment',
+  Job: 'Job'
 };
 /**
  * Create the Client
@@ -175,13 +221,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Token {\n  id    Int    @id @default(autoincrement())\n  value String @unique\n\n  @@map(\"tokens\")\n}\n\nmodel Establishment {\n  id         Int      @id @default(autoincrement())\n  name       String\n  cnpj       String   @unique\n  email      String   @unique\n  password   String\n  createTime DateTime @default(now()) @map(\"create_time\")\n\n  @@map(\"establishments\")\n}\n",
-  "inlineSchemaHash": "e5cc14489e62a6ed93335a844914995037863328972dca3991fb8ac1e3cfabd9",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Token {\n  id    Int    @id @default(autoincrement())\n  value String @unique\n\n  @@map(\"tokens\")\n}\n\nmodel Establishment {\n  id          Int      @id @default(autoincrement())\n  name        String\n  cnpj        String   @unique\n  email       String   @unique\n  password    String\n  createTime  DateTime @default(now()) @map(\"create_time\")\n  socialLinks Json?    @map(\"social_links\")\n  jobs        Job[]    @relation(\"EstablishmentJobs\") // 👈 nome da relação\n\n  @@map(\"establishments\")\n}\n\nmodel Job {\n  id                 Int           @id @default(autoincrement())\n  title              String\n  description        String\n  status             String        @default(\"opened\")\n  totalVacancies     Int\n  remainingVacancies Int\n  expiration         DateTime?\n  educationLevel     String\n  workingHoursPerDay Int\n  createdDate        DateTime      @default(now())\n  link               String?\n  establishmentId    Int\n  establishment      Establishment @relation(\"EstablishmentJobs\", fields: [establishmentId], references: [id]) // 👈 mesmo nome\n\n  @@map(\"jobs\")\n}\n",
+  "inlineSchemaHash": "4cc9df399faeaa4d2caf86b82dd6a193272afccb9d7ec4f14a90560ed2551729",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Token\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"tokens\"},\"Establishment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cnpj\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createTime\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"create_time\"}],\"dbName\":\"establishments\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Token\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"tokens\"},\"Establishment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cnpj\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createTime\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"create_time\"},{\"name\":\"socialLinks\",\"kind\":\"scalar\",\"type\":\"Json\",\"dbName\":\"social_links\"},{\"name\":\"jobs\",\"kind\":\"object\",\"type\":\"Job\",\"relationName\":\"EstablishmentJobs\"}],\"dbName\":\"establishments\"},\"Job\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"totalVacancies\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"remainingVacancies\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"expiration\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"educationLevel\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"workingHoursPerDay\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"link\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"establishmentId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"establishment\",\"kind\":\"object\",\"type\":\"Establishment\",\"relationName\":\"EstablishmentJobs\"}],\"dbName\":\"jobs\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
