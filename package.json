@@ -21,7 +21,9 @@
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "nodemailer": "^7.0.7",
+    "resend": "^6.1.2"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.9",
@@ -30,6 +32,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.3.1",
+    "@types/nodemailer": "^7.0.2",
     "cross-env": "^10.0.0",
     "nodemon": "^3.1.10",
     "prisma": "^6.16.0",

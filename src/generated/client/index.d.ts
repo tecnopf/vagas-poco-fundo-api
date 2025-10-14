@@ -3164,7 +3164,7 @@ export namespace Prisma {
   export type JobGroupByOutputType = {
     id: number
     title: string
-    description: string
+    description: string | null
     status: string
     totalVacancies: number
     remainingVacancies: number
@@ -3241,7 +3241,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       title: string
-      description: string
+      description: string | null
       status: string
       totalVacancies: number
       remainingVacancies: number
@@ -4280,7 +4280,7 @@ export namespace Prisma {
     NOT?: JobWhereInput | JobWhereInput[]
     id?: IntFilter<"Job"> | number
     title?: StringFilter<"Job"> | string
-    description?: StringFilter<"Job"> | string
+    description?: StringNullableFilter<"Job"> | string | null
     status?: StringFilter<"Job"> | string
     totalVacancies?: IntFilter<"Job"> | number
     remainingVacancies?: IntFilter<"Job"> | number
@@ -4296,7 +4296,7 @@ export namespace Prisma {
   export type JobOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
-    description?: SortOrder
+    description?: SortOrderInput | SortOrder
     status?: SortOrder
     totalVacancies?: SortOrder
     remainingVacancies?: SortOrder
@@ -4316,7 +4316,7 @@ export namespace Prisma {
     OR?: JobWhereInput[]
     NOT?: JobWhereInput | JobWhereInput[]
     title?: StringFilter<"Job"> | string
-    description?: StringFilter<"Job"> | string
+    description?: StringNullableFilter<"Job"> | string | null
     status?: StringFilter<"Job"> | string
     totalVacancies?: IntFilter<"Job"> | number
     remainingVacancies?: IntFilter<"Job"> | number
@@ -4332,7 +4332,7 @@ export namespace Prisma {
   export type JobOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
-    description?: SortOrder
+    description?: SortOrderInput | SortOrder
     status?: SortOrder
     totalVacancies?: SortOrder
     remainingVacancies?: SortOrder
@@ -4355,7 +4355,7 @@ export namespace Prisma {
     NOT?: JobScalarWhereWithAggregatesInput | JobScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Job"> | number
     title?: StringWithAggregatesFilter<"Job"> | string
-    description?: StringWithAggregatesFilter<"Job"> | string
+    description?: StringNullableWithAggregatesFilter<"Job"> | string | null
     status?: StringWithAggregatesFilter<"Job"> | string
     totalVacancies?: IntWithAggregatesFilter<"Job"> | number
     remainingVacancies?: IntWithAggregatesFilter<"Job"> | number
@@ -4472,7 +4472,7 @@ export namespace Prisma {
 
   export type JobCreateInput = {
     title: string
-    description: string
+    description?: string | null
     status?: string
     totalVacancies: number
     remainingVacancies: number
@@ -4487,7 +4487,7 @@ export namespace Prisma {
   export type JobUncheckedCreateInput = {
     id?: number
     title: string
-    description: string
+    description?: string | null
     status?: string
     totalVacancies: number
     remainingVacancies: number
@@ -4501,7 +4501,7 @@ export namespace Prisma {
 
   export type JobUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     totalVacancies?: IntFieldUpdateOperationsInput | number
     remainingVacancies?: IntFieldUpdateOperationsInput | number
@@ -4516,7 +4516,7 @@ export namespace Prisma {
   export type JobUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     totalVacancies?: IntFieldUpdateOperationsInput | number
     remainingVacancies?: IntFieldUpdateOperationsInput | number
@@ -4531,7 +4531,7 @@ export namespace Prisma {
   export type JobCreateManyInput = {
     id?: number
     title: string
-    description: string
+    description?: string | null
     status?: string
     totalVacancies: number
     remainingVacancies: number
@@ -4545,7 +4545,7 @@ export namespace Prisma {
 
   export type JobUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     totalVacancies?: IntFieldUpdateOperationsInput | number
     remainingVacancies?: IntFieldUpdateOperationsInput | number
@@ -4559,7 +4559,7 @@ export namespace Prisma {
   export type JobUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     totalVacancies?: IntFieldUpdateOperationsInput | number
     remainingVacancies?: IntFieldUpdateOperationsInput | number
@@ -4791,17 +4791,6 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -4815,6 +4804,17 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type EstablishmentScalarRelationFilter = {
@@ -4889,20 +4889,6 @@ export namespace Prisma {
     establishmentId?: SortOrder
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -4919,6 +4905,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -4985,12 +4985,12 @@ export namespace Prisma {
     connect?: EstablishmentWhereUniqueInput
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type EstablishmentUpdateOneRequiredWithoutJobsNestedInput = {
@@ -5131,17 +5131,6 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -5157,7 +5146,7 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | null
     notIn?: Date[] | string[] | null
@@ -5165,10 +5154,7 @@ export namespace Prisma {
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5189,9 +5175,23 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type JobCreateWithoutEstablishmentInput = {
     title: string
-    description: string
+    description?: string | null
     status?: string
     totalVacancies: number
     remainingVacancies: number
@@ -5205,7 +5205,7 @@ export namespace Prisma {
   export type JobUncheckedCreateWithoutEstablishmentInput = {
     id?: number
     title: string
-    description: string
+    description?: string | null
     status?: string
     totalVacancies: number
     remainingVacancies: number
@@ -5248,7 +5248,7 @@ export namespace Prisma {
     NOT?: JobScalarWhereInput | JobScalarWhereInput[]
     id?: IntFilter<"Job"> | number
     title?: StringFilter<"Job"> | string
-    description?: StringFilter<"Job"> | string
+    description?: StringNullableFilter<"Job"> | string | null
     status?: StringFilter<"Job"> | string
     totalVacancies?: IntFilter<"Job"> | number
     remainingVacancies?: IntFilter<"Job"> | number
@@ -5317,7 +5317,7 @@ export namespace Prisma {
   export type JobCreateManyEstablishmentInput = {
     id?: number
     title: string
-    description: string
+    description?: string | null
     status?: string
     totalVacancies: number
     remainingVacancies: number
@@ -5330,7 +5330,7 @@ export namespace Prisma {
 
   export type JobUpdateWithoutEstablishmentInput = {
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     totalVacancies?: IntFieldUpdateOperationsInput | number
     remainingVacancies?: IntFieldUpdateOperationsInput | number
@@ -5344,7 +5344,7 @@ export namespace Prisma {
   export type JobUncheckedUpdateWithoutEstablishmentInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     totalVacancies?: IntFieldUpdateOperationsInput | number
     remainingVacancies?: IntFieldUpdateOperationsInput | number
@@ -5358,7 +5358,7 @@ export namespace Prisma {
   export type JobUncheckedUpdateManyWithoutEstablishmentInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     totalVacancies?: IntFieldUpdateOperationsInput | number
     remainingVacancies?: IntFieldUpdateOperationsInput | number

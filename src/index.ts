@@ -1,6 +1,6 @@
 import { ADMIN_PASSWORD } from "./config/env";
 import express, { Request, Response } from "express";
-import vagasRouter from "./routes/vagas";
+import vacancyRoutes from "./routes/vacancy";
 import adminRoutes from "./routes/admin";
 import authRoutes from "./routes/auth"
 import cors from "cors";
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 app.use(cors(
   {
     credentials: true,
-    origin: process.env.NODE_ENV !== "production" ? 'http://localhost:5173' : 'https://vagaspocofundo.netlify.app'
+    origin: process.env.NODE_ENV !== "production" ? 'http://192.168.0.167:5173' : 'https://vagaspocofundo.netlify.app'
   }
 ));
 app.use(cookieParser())
@@ -40,7 +40,7 @@ app.get("/", (req: Request, res: Response) => {
 
 const apiRouter = express.Router();
 
-apiRouter.use("/vagas", vagasRouter);
+apiRouter.use("/vacancy", vacancyRoutes);
 apiRouter.use("/admin", adminRoutes);
 apiRouter.use("/auth", authRoutes);
 apiRouter.use("/profile", profileRoutes);

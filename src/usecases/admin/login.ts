@@ -7,7 +7,7 @@ export class LoginAdmin {
     if (key === ADMIN_PASSWORD) {
       res.cookie("admin_session", key, {
         httpOnly: true,
-        maxAge: 5 * 60 * 1000, // 5 horas 5 * 60 *
+        maxAge: 5 * 24 * 60 * 60 * 1000, 
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production",
       });
