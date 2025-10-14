@@ -1,5 +1,4 @@
 import { IVacancyRepository } from "../../repositories/IVacancyRepository";
-import { Job } from "../../generated/client";
 
 export class ListVacanciesUseCase {
   constructor(private repo: IVacancyRepository) {}
