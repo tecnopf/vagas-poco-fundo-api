@@ -4,7 +4,7 @@ import { ListVacanciesUseCase } from "../usecases/vacancy/listVacancies";
 import { UpdateVacancyUseCase } from "../usecases/vacancy/updateVacancy";
 import { DeleteVacancyUseCase } from "../usecases/vacancy/deleteVacancy";
 import { ListVacanciesByEstablishmentUseCase } from "../usecases/vacancy/listVacancyByEstablishment";
-import { Prisma } from "../generated/client";
+import { Prisma } from "@prisma/client"; 
 
 export class VacancyController {
   constructor(

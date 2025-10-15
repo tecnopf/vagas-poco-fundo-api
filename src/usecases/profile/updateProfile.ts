@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { IEstablishmentRepository } from "../../repositories/IEstablishmentRepository";
 import { AppError } from "../../utils/AppError";
 import bcrypt from "bcryptjs";
@@ -22,7 +23,7 @@ export class UpdateProfileUseCase {
       if (existing) throw new AppError("Email already registered", 409);
     }
 
-    const updatedData: Partial<typeof user> = {};
+    const updatedData: Prisma.EstablishmentUpdateInput = {};
 
     if (name) updatedData.name = name;
     if (email) updatedData.email = email;

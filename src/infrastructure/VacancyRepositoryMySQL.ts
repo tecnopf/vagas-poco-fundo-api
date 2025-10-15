@@ -1,9 +1,8 @@
 import { JsonValue } from "@prisma/client/runtime/library";
-import { PrismaClient, Job, Prisma } from "../generated/client";
+import { Job, Prisma, PrismaClient } from "@prisma/client";
 import { IVacancyRepository } from "../repositories/IVacancyRepository";
 
 const prisma = new PrismaClient();
-
 
 export type JobWithEstablishment = Job & {
   establishment: {
@@ -63,7 +62,7 @@ export class PrismaVacancyRepository implements IVacancyRepository {
 
   async update(id: number, data: Prisma.JobUpdateInput): Promise<Job> {
     console.log(JSON.stringify(data))
-    return prisma.job.update({ where: { id }, data });
+    return prisma.job.update({ where: { id }, data: {...data, createdDate: new Date()} });
   }
 
   async delete(id: number): Promise<Job> {

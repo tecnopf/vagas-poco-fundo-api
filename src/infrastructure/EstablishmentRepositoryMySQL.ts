@@ -1,7 +1,5 @@
-import { InputJsonValue } from "@prisma/client/runtime/library";
-import { PrismaClient, Establishment } from "../generated/client";
 import { IEstablishmentRepository } from "../repositories/IEstablishmentRepository";
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaClient, Establishment  } from "@prisma/client";
 
 const prisma = new PrismaClient();
 

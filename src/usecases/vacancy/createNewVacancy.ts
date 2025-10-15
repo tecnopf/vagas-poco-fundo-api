@@ -1,5 +1,5 @@
 import { IVacancyRepository } from "../../repositories/IVacancyRepository";
-import { Prisma, Job } from "../../generated/client";
+import { Prisma, Job } from "@prisma/client"; 
 
 export class CreateVacancyUseCase {
   constructor(private repo: IVacancyRepository) {}

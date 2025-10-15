@@ -1,4 +1,4 @@
-import { Job, Prisma } from "../generated/client";
+import { Job, Prisma } from "@prisma/client"; 
 
 export interface IVacancyRepository {
   create(data: Prisma.JobCreateInput): Promise<Job>;

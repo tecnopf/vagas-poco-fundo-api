@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 app.use(cors(
   {
     credentials: true,
-    origin: process.env.NODE_ENV !== "production" ? 'http://192.168.0.167:5173' : 'https://vagaspocofundo.netlify.app'
+    origin: process.env.NODE_ENV !== "production" ? 'http://192.168.0.122:5173' : 'https://vagaspocofundo.netlify.app'
   }
 ));
 app.use(cookieParser())

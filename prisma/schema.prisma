@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/client"
+  
 }
 
 datasource db {
@@ -41,7 +41,7 @@ model Job {
   createdDate        DateTime      @default(now()) @map("created_date")
   link               String? 
   establishmentId    Int           @map("establishment_id")
-  establishment      Establishment  @relation("EstablishmentJobs", fields: [establishmentId], references: [id]) 
+  establishment      Establishment @relation("EstablishmentJobs", fields: [establishmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("jobs") 
 }

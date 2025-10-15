@@ -1,6 +1,6 @@
 import { IVacancyRepository } from "../../repositories/IVacancyRepository";
 import { AppError } from "../../utils/AppError";
-import { Job } from "../../generated/client";
+import { Job } from "@prisma/client"; 
 
 export class DeleteVacancyUseCase {
   constructor(private repo: IVacancyRepository) {}
