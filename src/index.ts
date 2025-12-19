@@ -1,12 +1,13 @@
-import { ADMIN_PASSWORD } from "./config/env";
+import { LOCAL_IP} from "./config/env";
 import express, { Request, Response } from "express";
 import vacancyRoutes from "./routes/vacancy";
 import adminRoutes from "./routes/admin";
-import authRoutes from "./routes/auth"
+import userRoutes from './routes/authUser'
+import establishmentRoutes from './routes/authEstablishment'
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-import profileRoutes from "./routes/profile";
+import establishmentProfileRoutes from "./routes/profileEstablishment";
 import { errorMiddleware } from "./middlewares/ErrorMiddleware";
 
 const app = express();
@@ -21,7 +22,9 @@ app.use((req, res, next) => {
 app.use(cors(
   {
     credentials: true,
-    origin: process.env.NODE_ENV !== "production" ? 'http://192.168.0.122:5173' : 'https://vagaspocofundo.netlify.app'
+    origin: process.env.NODE_ENV !== "production"
+  ? `http://${LOCAL_IP}:5173`
+  : 'https://vagaspocofundo.netlify.app'
   }
 ));
 app.use(cookieParser())
@@ -42,8 +45,9 @@ const apiRouter = express.Router();
 
 apiRouter.use("/vacancy", vacancyRoutes);
 apiRouter.use("/admin", adminRoutes);
-apiRouter.use("/auth", authRoutes);
-apiRouter.use("/profile", profileRoutes);
+apiRouter.use('/auth/user', userRoutes )
+apiRouter.use('/auth/establishment', establishmentRoutes )
+apiRouter.use("/establishment/profile", establishmentProfileRoutes);
 
 app.use("/api", apiRouter);
 

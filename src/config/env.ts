@@ -5,11 +5,14 @@ import path from "path";
 if (process.env.NODE_ENV !== "production") {
   if (process.env.NODE_ENV === "development") {
     dotenv.config({ path: ".env.development" });
+    dotenv.config({ path: ".env.local-ip" });
   } else if (process.env.NODE_ENV === "dev-prod") {
     dotenv.config({ path: ".env.dev-prod" });
+    dotenv.config({ path: ".env.local-ip" });
   }
   else if (process.env.NODE_ENV === "demo-prod") {
     dotenv.config({ path: ".env.demo-prod" });
+    dotenv.config({ path: ".env.local-ip" });
   }
 }
 
@@ -20,6 +23,8 @@ export const JWT_SECRET = process.env.JWT_SECRET
 export const MAIL_USER = process.env.MAIL_USER
 export const MAIL_PASS = process.env.MAIL_PASS
 export const FRONTEND_URL = process.env.FRONTEND_URL
+export const LOCAL_IP = process.env.LOCAL_IP
+
 
 if (!ADMIN_PASSWORD) {
   throw new Error("ADMIN_KEY not defined in environment variables");

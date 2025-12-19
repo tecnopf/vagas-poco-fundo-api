@@ -19,7 +19,6 @@ export class VacancyController {
     if (!req.userId) return res.status(401).json({ error: "Unauthorized" });
 
 
-    console.log(req.userId)
 
     try {
       const data = req.body;

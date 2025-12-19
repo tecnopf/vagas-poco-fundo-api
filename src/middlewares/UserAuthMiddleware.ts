@@ -12,7 +12,7 @@ declare global {
 }
 
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const EnsureUserAuth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.token;
   if (!token) return res.status(401).json({ error: "Unauthorized" });
 

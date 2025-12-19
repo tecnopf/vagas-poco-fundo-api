@@ -1,14 +1,16 @@
-// src/usecases/auth/magicLink.ts
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import { IEstablishmentRepository } from "../../repositories/IEstablishmentRepository";
+import { IAuthRepository } from "../../repositories/IAuthRepository";
 import { FRONTEND_URL, MAIL_PASS, MAIL_USER } from "../../config/env";
+import { IUserRepository } from "../../repositories/IUserRepository";
+import { IEstablishmentRepository } from "../../repositories/IEstablishmentRepository";
+
 
 export class MagicLinkUseCase {
-  constructor(private establishmentRepo: IEstablishmentRepository) {}
+  constructor(private repo: IUserRepository | IEstablishmentRepository) {}
 
   async send(email: string): Promise<void> {
-    const user = await this.establishmentRepo.findByEmail(email);
+    const user = await this.repo.findByEmail(email);
     if (!user) throw new Error("E-mail não encontrado");
 
     const token = jwt.sign(
@@ -18,9 +20,6 @@ export class MagicLinkUseCase {
     );
 
     const link = `${FRONTEND_URL}/auth/magic-login?token=${token}`;
-
-    console.log('user: ', MAIL_USER, ', pass: ', MAIL_PASS)
-    console.log(link)
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -49,14 +48,13 @@ export class MagicLinkUseCase {
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET!) as {
         id: number;
-        email: string;
       };
 
-      const user = await this.establishmentRepo.findById(payload.id);
+      const user = await this.repo.findById(payload.id);
       if (!user) throw new Error("Usuário não encontrado");
 
       const loginToken = jwt.sign(
-        { id: user.id },
+        { id: payload.id },
         process.env.JWT_SECRET!,
         { expiresIn: "3d" }
       );

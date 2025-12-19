@@ -45,3 +45,14 @@ model Job {
 
   @@map("jobs") 
 }
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  cpf      String @unique
+  email    String @unique
+  password String
+  birthDate DateTime @map("birth_date")
+
+  @@map("users")
+}
