@@ -19,9 +19,16 @@ export const EnsureEstablishmentAuth = (
   const token = req.cookies.token;
   if (!token) return res.status(401).json({ error: "Unauthorized" });
 
+  
+
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as { id: string };
+    const payload = jwt.verify(token, JWT_SECRET) as { id: string, role: string};
+    if (payload.role !== "establishment") {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+    console.log('token role: ',payload.role)
     req.establishmentId = payload.id;
+    req.role = payload.role
     next();
   } catch {
     return res.status(401).json({ error: "Invalid token" });

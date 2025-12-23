@@ -22,7 +22,10 @@ export class EstablishmentAuthController {
 
   login = async (req: Request, res: Response) => {
     try {
-      const { token, user } = await this.loginUseCase.execute(req.body);
+      const { token, entity } = await this.loginUseCase.execute({
+        ...req.body,
+        type: "establishment",
+      });
 
       res.cookie("token", token, {
         maxAge: 3 * 24 * 60 * 60 * 1000,
@@ -34,7 +37,7 @@ export class EstablishmentAuthController {
       res.json({
         message: "Logged in",
         role: "establishment",
-        user,
+        establishment: entity,
       });
     } catch (err: any) {
       res.status(err.status ?? 401).json({ error: err.message });

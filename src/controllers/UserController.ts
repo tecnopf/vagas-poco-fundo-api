@@ -18,7 +18,7 @@ export class UserAuthController {
 
   login = async (req: Request, res: Response) => {
     try {
-      const { token, user } = await this.loginUseCase.execute(req.body);
+      const { token, entity } = await this.loginUseCase.execute({...req.body, type:'user'});
 
       res.cookie("token", token, {
         maxAge: 3 * 24 * 60 * 60 * 1000,
@@ -30,7 +30,7 @@ export class UserAuthController {
       res.json({
         message: "Logged in",
         role: "user",
-        user,
+        user: entity,
       });
     } catch (err: any) {
       res.status(err.status ?? 401).json({ error: err.message });
