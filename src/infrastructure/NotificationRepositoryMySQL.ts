@@ -4,8 +4,8 @@ import { INotificationRepository } from "../repositories/INotificationRepository
 const prisma = new PrismaClient();
 
 export class PrismaNotificationRepository implements INotificationRepository {
-  async create(data: Prisma.NotificationCreateInput): Promise<Notification> {
-    return prisma.notification.create({ data });
+  async create(tx: Prisma.TransactionClient, data: Prisma.NotificationCreateInput, ): Promise<Notification> {
+    return tx.notification.create({ data });
   }
 
   async findUnreadByUser(userId: number): Promise<Notification[]> {

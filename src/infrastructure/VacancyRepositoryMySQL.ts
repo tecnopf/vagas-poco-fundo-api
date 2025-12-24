@@ -1,6 +1,7 @@
 import { JsonValue } from "@prisma/client/runtime/library";
 import { Job, Prisma, PrismaClient } from "@prisma/client";
 import { IVacancyRepository } from "../repositories/IVacancyRepository";
+import { AppError } from "../utils/AppError";
 
 const prisma = new PrismaClient();
 
@@ -55,6 +56,46 @@ export class PrismaVacancyRepository implements IVacancyRepository {
       where: { establishmentId },
     });
   }
+
+  async applyToJobTransactional({
+    tx,
+    userId,
+    job,
+    resumeUrl
+  }: {
+    tx: Prisma.TransactionClient;
+    userId: number;
+    job: Job;
+    resumeUrl?: string;
+  }) {
+    const updatedJob = await tx.job.updateMany({
+      where: {
+        id: job.id,
+        remainingVacancies: { gt: 0 }
+      },
+      data: {
+        remainingVacancies: { decrement: 1 }
+      }
+    });
+
+    if (updatedJob.count === 0) {
+      throw new AppError("INSUFFICIENT_VACANCIES", 409);
+    }
+
+    const application = await tx.application.create({
+      data: {
+        user: { connect: { id: userId } },
+        job: { connect: { id: job.id } },
+        establishment: { connect: { id: job.establishmentId } },
+        resumeUrl,
+        status: "pending"
+      }
+    });
+
+    return application;
+  }
+
+
 
   async findById(id: number): Promise<Job | null> {
     return prisma.job.findUnique({ where: { id } });

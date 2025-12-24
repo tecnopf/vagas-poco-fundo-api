@@ -1,3 +1,4 @@
+import prisma from "../../infrastructure/prismaClient";
 import { IApplicationRepository } from "../../repositories/IApplicationRepository";
 import { INotificationRepository } from "../../repositories/INotificationRepository";
 import { ISseService } from "../../services/ISseService"; 
@@ -34,15 +35,20 @@ export class DisapproveApplicationUseCase {
       applicationId,
       "disapproved"
     );
+    const notification = await prisma.$transaction(async (tx) => {
+      const notification = await this.notificationRepository.create(tx,{
+        user: { connect: { id: application.userId } },
+        type: "application_disapproved",
+        payload: {
+          applicationId,
+          jobId: application.jobId
+        }
+      });
+      return notification
+    }
+  )
 
-    const notification = await this.notificationRepository.create({
-      user: { connect: { id: application.userId } },
-      type: "application_disapproved",
-      payload: {
-        applicationId,
-        jobId: application.jobId
-      }
-    });
+    
 
     this.sseService.emitToUser(application.userId, {
       type: notification.type,

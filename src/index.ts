@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import establishmentProfileRoutes from "./routes/profileEstablishment";
 import { errorMiddleware } from "./middlewares/ErrorMiddleware";
+import applicationsRoutes from "./routes/applications";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -48,6 +49,7 @@ apiRouter.use("/admin", adminRoutes);
 apiRouter.use('/auth/user', userRoutes )
 apiRouter.use('/auth/establishment', establishmentRoutes )
 apiRouter.use("/establishment/profile", establishmentProfileRoutes);
+apiRouter.use("/applications", applicationsRoutes);
 
 app.use("/api", apiRouter);
 

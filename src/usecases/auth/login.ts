@@ -19,7 +19,9 @@ export class LoginUseCase{
   constructor(private repo: IUserRepository | IEstablishmentRepository) {}
 
   async execute({ email, password, type }: LoginRequest) {
+    
     const entity = await this.repo.findByEmail(email);
+
     if (!entity) throw new AppError("EMAIL_NOT_FOUND", 401);
 
     const isPasswordValid = await bcrypt.compare(password, entity.password);

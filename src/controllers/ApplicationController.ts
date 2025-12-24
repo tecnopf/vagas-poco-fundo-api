@@ -4,6 +4,11 @@ import { ListUserApplicationsUseCase } from "../usecases/applications/ListUserAp
 import { ListEstablishmentApplicationsUseCase } from "../usecases/applications/ListEstablishmentApplicationsUseCase"; 
 import { ApproveApplicationUseCase } from "../usecases/applications/ApproveApplicationsUseCase"; 
 import { DisapproveApplicationUseCase } from "../usecases/applications/DisapproveApplicationsUseCase"; 
+import { FtpResumeStorageService } from "../services/ResumeStorageService";
+import { IResumeStorageService } from "../services/IResumeStorageService";
+import { IVacancyRepository } from "../repositories/IVacancyRepository";
+import { IUserRepository } from "../repositories/IUserRepository";
+import { AppError } from "../utils/AppError";
 
 export class ApplicationsController {
   constructor(
@@ -11,19 +16,41 @@ export class ApplicationsController {
     private listUserApplicationsUseCase: ListUserApplicationsUseCase,
     private listEstablishmentApplicationsUseCase: ListEstablishmentApplicationsUseCase,
     private approveApplicationUseCase: ApproveApplicationUseCase,
-    private disapproveApplicationUseCase: DisapproveApplicationUseCase
+    private disapproveApplicationUseCase: DisapproveApplicationUseCase,
+    private resumeStorageService: IResumeStorageService,
+    private vacancyRepository: IVacancyRepository,
+    private userRepository: IUserRepository
   ) {}
 
   apply = async (req: Request, res: Response) => {
     try {
       const userId = Number(req.userId);
-      const { jobId, resumeUrl } = req.body;
+
+      const jobId = req.body.jobId;
+      const file = req.file;
+
+      const job = await this.vacancyRepository.findById(Number(jobId));
+      if (!job) throw new AppError("VACANCY_NOT_FOUND", 404);
+
+      let resumeUrl = ''
+
+      if(file){
+        const user = await this.userRepository.findById(userId)
+        if (!user) throw new AppError("USER_NOT_FOUND", 404);
+
+        resumeUrl = await this.resumeStorageService.upload({
+          fileBuffer: file.buffer,
+          userName: user?.name,
+          jobTitle: job.title,
+          date: new Date()
+        });
+      }
 
       const application = await this.applyToJobUseCase.execute({
         userId,
-        jobId,
+        job: job,
         resumeUrl
-      });
+      })
 
       res.status(201).json({
         message: "Application created",
